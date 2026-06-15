@@ -86,6 +86,56 @@
       <p>GDS &rarr; MTS / Postman exam preparation tracker &mdash; all progress saved automatically on this device</p>
     </div>
 
+    <!-- Postal Hero -->
+    <div class="card postal-hero">
+      <div class="postal-hero-illustration">
+        <svg viewBox="0 0 200 140" width="180" height="126">
+          <ellipse class="postal-shadow" cx="45" cy="128" rx="42" ry="6"/>
+          <g class="postal-box-group">
+            <rect class="postal-box" x="15" y="55" width="60" height="55" rx="6"/>
+            <path class="postal-box" d="M15 55 a30 30 0 0 1 60 0 z"/>
+            <rect class="postal-slot" x="30" y="64" width="30" height="6" rx="3"/>
+            <rect class="postal-leg" x="22" y="110" width="8" height="12" rx="2"/>
+            <rect class="postal-leg" x="60" y="110" width="8" height="12" rx="2"/>
+            <g class="postal-flag">
+              <rect class="postal-flag-pole" x="75" y="40" width="3" height="22"/>
+              <path class="postal-flag-flag" d="M78 40 h16 v10 l-8 5 -8 -5 z"/>
+            </g>
+          </g>
+          <g class="postal-env e1">
+            <rect class="postal-env-body" x="105" y="15" width="46" height="32" rx="3"/>
+            <path class="postal-env-flap" d="M105 15 L128 33 L151 15"/>
+            <circle class="postal-stamp" cx="138" cy="27" r="6"/>
+          </g>
+          <g class="postal-env e2">
+            <rect class="postal-env-body" x="130" y="62" width="40" height="28" rx="3"/>
+            <path class="postal-env-flap" d="M130 62 L150 78 L170 62"/>
+          </g>
+          <g class="postal-env e3">
+            <rect class="postal-env-body" x="90" y="95" width="34" height="24" rx="3"/>
+            <path class="postal-env-flap" d="M90 95 L107 109 L124 95"/>
+          </g>
+          <g class="postal-seal">
+            <circle class="postal-seal-ring" cx="172" cy="110" r="18"/>
+            <polygon class="postal-seal-star" points="172,100 175,107 183,107 176,112 178,120 172,115 166,120 168,112 161,107 169,107"/>
+          </g>
+          <circle class="postal-sparkle sp1" cx="20" cy="20" r="2"/>
+          <circle class="postal-sparkle sp2" cx="185" cy="35" r="1.6"/>
+          <circle class="postal-sparkle sp3" cx="95" cy="10" r="1.4"/>
+        </svg>
+      </div>
+      <div class="postal-hero-content">
+        <div class="postal-hero-title">Your Complete India Post Exam Companion</div>
+        <p class="postal-hero-sub">Manuals, mock tests, GK, math, videos and progress tracking — everything you need for the GDS recruitment cycle and the LDCEs that follow, in one place.</p>
+        <div class="postal-hero-tags">
+          <span class="postal-tag t-gds">GDS</span>
+          <span class="postal-tag t-mts">MTS</span>
+          <span class="postal-tag t-postman">Postman</span>
+          <span class="postal-tag t-chsl">CHSL</span>
+        </div>
+      </div>
+    </div>
+
     <div class="stats-grid" style="grid-template-columns:repeat(5,1fr)">
       <div class="stat-card" style="--accent-color:var(--success)">
         <div class="stat-icon" style="background:var(--success-muted)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
@@ -225,7 +275,7 @@
           <div class="today-label">Evening</div>
           <div class="today-title">GK &amp; Current Affairs</div>
           <div class="today-sub">10–15 minutes — Postal Study channel GK videos and India Post current affairs</div>
-          <button class="btn btn-ghost btn-sm" onclick="openYT('Postal Study GK current affairs')">Watch GK</button>
+          <button class="btn btn-ghost btn-sm" onclick="playVideo(subjects.gk.ytVideoId,'GK &amp; Current Affairs')">Watch GK</button>
         </div>
         <div class="today-card" style="--accent-c:var(--warning)">
           <div class="today-label">Sunday Only</div>
@@ -247,7 +297,7 @@
       </div>
       <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
         <button class="btn btn-primary btn-sm" onclick="navigateTo('examinfo')">Full Exam Pattern</button>
-        <button class="btn btn-ghost btn-sm" onclick="openYT('Postal Study GDS to MTS Postman exam preparation')">Postal Study Channel</button>
+        <button class="btn btn-ghost btn-sm" onclick="playVideo(subjects.postal.ytVideoId,'Postal Study — GDS to MTS / Postman')">Postal Study Channel</button>
         <button class="btn btn-ghost btn-sm" onclick="searchGoogle('GDS to MTS Postman LDCE exam syllabus India Post')">Official Syllabus</button>
       </div>
     </div>
@@ -387,6 +437,23 @@
   <!-- ══ VIDEO LIBRARY ══ -->
   <div class="section" id="sec-playlists">
     <div class="page-header"><h2>Video Library</h2><p>Curated topic-wise watch links for the <strong>Postal Study</strong> YouTube channel (preferred channel for GDS LDCE prep) plus quick Google searches</p></div>
+    <div class="card" id="video-player-wrap" style="display:none">
+      <div class="video-back-bar" style="margin-bottom:12px;padding-bottom:0;border-bottom:none">
+        <button class="video-back-btn" onclick="closeVideoPlayer()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Close Player
+        </button>
+        <div style="flex:1;font-weight:700;font-size:14px" id="video-player-title"></div>
+        <button class="btn btn-ghost btn-sm" onclick="openCurrentVideoInYT()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Open in YouTube
+        </button>
+      </div>
+      <div class="video-wrapper">
+        <iframe id="video-player-frame" src="" title="YouTube Player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div style="font-size:11.5px;color:var(--text-muted);margin-top:8px">Playing a curated Postal Study video for this subject right inside the app. Use "Open in YouTube" to watch on youtube.com or browse more videos from the channel.</div>
+    </div>
     <div class="lib-filters">
       <button class="lib-filter active" data-f="all" onclick="filterLib('all')">All Topics</button>
       <button class="lib-filter" data-f="postal" onclick="filterLib('postal')">Postal Knowledge</button>
@@ -451,7 +518,7 @@
         <li>Take full-length mock tests under timed conditions (50 min for MTS, 75 min for Postman) to build stamina and pacing.</li>
         <li>Maintain a Mistake Book — review every wrong answer from your mocks weekly.</li>
       </ul>
-      <div style="margin-top:14px"><button class="btn btn-primary btn-sm" onclick="openYT('Postal Study GDS to MTS Postman exam preparation')">Open Postal Study on YouTube</button></div>
+      <div style="margin-top:14px"><button class="btn btn-primary btn-sm" onclick="playVideo(subjects.postal.ytVideoId,'Postal Study — GDS to MTS / Postman')">Open Postal Study on YouTube</button></div>
     </div>
   </div>
 

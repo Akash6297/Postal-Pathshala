@@ -11,6 +11,7 @@ const state = {
   overrides: JSON.parse(localStorage.getItem('pm_overrides') || '{}'),
   reports: JSON.parse(localStorage.getItem('pm_reports') || '[]'),
   pdfRead: JSON.parse(localStorage.getItem('pm_pdf_read') || '[]'),
+  videoWatched: JSON.parse(localStorage.getItem('pm_video_watched') || '[]'),
   currentSubject: 'postal',
   mockMode: 'full',
   reportFilter: 'all',
@@ -25,6 +26,7 @@ const subjects = {
   postal: {
     name: 'Postal Knowledge',
     color: '#1d4ed8',
+    ytVideoId: 'gs5QlqKc8n0',
     topics: [
       { name: 'Postal Manual Vol-V — Key Definitions', tags: ['Definitions', 'PMG', 'Divisional Setup'], search: 'Postal Manual Volume 5 definitions PMG Divisional Superintendent GDS exam' },
       { name: 'Postal Manual VI & VII — Rules', tags: ['Stamps & Seals', 'Conduct Rules', 'Procedures'], search: 'Postal Manual Volume 6 7 rules stamps seals conduct GDS exam' },
@@ -36,6 +38,7 @@ const subjects = {
   gk: {
     name: 'General Knowledge',
     color: '#059669',
+    ytVideoId: '8SJAh6om3EA',
     topics: [
       { name: 'History', tags: ['Ancient', 'Medieval', 'Modern', 'Freedom Struggle'], search: 'Indian history GK GDS MTS Postman exam' },
       { name: 'Geography', tags: ['Indian Geography', 'World Geography', 'Rivers'], search: 'Indian geography GK GDS MTS Postman exam' },
@@ -49,6 +52,7 @@ const subjects = {
   math: {
     name: 'Math & Reasoning',
     color: '#d97706',
+    ytVideoId: 'qCKUH9UNcN8',
     topics: [
       { name: 'Number System & Simplification', tags: ['Number System', 'Simplification', 'BODMAS'], search: 'number system simplification maths GDS MTS Postman exam' },
       { name: 'Percentage, Profit & Loss', tags: ['Percentage', 'Profit & Loss'], search: 'percentage profit loss maths tricks GDS MTS Postman exam' },
@@ -81,7 +85,7 @@ function seqFiles(folder, prefix, from, to, nameFn) {
 
 const pdfLibrary = [
   {
-    id: 'postal5', name: 'Postal Manual Vol-V', subject: 'postal',
+    id: 'postal5', name: 'Postal Manual Vol-V', subject: 'postal', icon: 'mailbox',
     desc: 'Key definitions, divisional setup and core terminology',
     files: [
       { name: 'Volume 1', path: 'Postal Manual Vol - V/Vol - 1.pdf' },
@@ -90,7 +94,7 @@ const pdfLibrary = [
     ],
   },
   {
-    id: 'postal67', name: 'Postal Manual VI & VII', subject: 'postal',
+    id: 'postal67', name: 'Postal Manual VI & VII', subject: 'postal', icon: 'stamp',
     desc: 'Rules on stamps, seals, conduct and procedures',
     files: [
       { name: 'Postal Manual Volume VII', path: 'Postal Manual VI and VII/Postal Vol - VII.pdf' },
@@ -99,7 +103,7 @@ const pdfLibrary = [
     ],
   },
   {
-    id: 'pogregs', name: 'Post Office Regulations 2024', subject: 'postal',
+    id: 'pogregs', name: 'Post Office Regulations 2024', subject: 'postal', icon: 'scroll',
     desc: 'New office procedures and rules — class-wise lectures',
     files: [
       { name: 'Class 2', path: 'Post Office Regulations 2024/class 2-1.pdf' },
@@ -117,12 +121,12 @@ const pdfLibrary = [
     ],
   },
   {
-    id: 'products', name: 'Products & Services', subject: 'postal',
+    id: 'products', name: 'Products & Services', subject: 'postal', icon: 'coins',
     desc: 'Savings schemes, interest rates, Speed Post and more',
     files: seqFiles('Products and Services', 'Lecture', 1, 10, i => `Lecture ${i}`),
   },
   {
-    id: 'pog1', name: 'Post Office Guide — Part 1', subject: 'postal',
+    id: 'pog1', name: 'Post Office Guide — Part 1', subject: 'postal', icon: 'van',
     desc: 'Foundational guide lectures for postal operations',
     files: [
       { name: 'Demo — Post Office Guide Part 1', path: 'Post Office Guide - 1/DEMO Post Office Guide Part - 1.pdf' },
@@ -138,22 +142,22 @@ const pdfLibrary = [
     ],
   },
   {
-    id: 'annual', name: 'Annual Report 2025-26', subject: 'postal',
+    id: 'annual', name: 'Annual Report 2025-26', subject: 'postal', icon: 'report',
     desc: 'India Post current affairs and annual report highlights',
     files: seqFiles('Annual Report 2025 - 2026', 'Annual Report', 1, 3, i => `Annual Report — Part ${i}`),
   },
   {
-    id: 'gkparts', name: 'GK Part Series (1-20)', subject: 'gk',
+    id: 'gkparts', name: 'GK Part Series (1-20)', subject: 'gk', icon: 'globe',
     desc: 'Bite-sized General Knowledge MCQ sets',
     files: seqFiles('GK', 'GK Part', 1, 20, i => `GK Part ${i}`),
   },
   {
-    id: 'gk2000', name: '2000 GK Lecture Series', subject: 'gk',
+    id: 'gk2000', name: '2000 GK Lecture Series', subject: 'gk', icon: 'globe',
     desc: 'Full video-lecture style GK PDF series (1-20)',
     files: seqFiles('GK/2000 GK Series', 'General Knowledge Lecture', 1, 20, i => `Lecture ${i}`),
   },
   {
-    id: 'gkspecial', name: 'GK Special Topics', subject: 'gk',
+    id: 'gkspecial', name: 'GK Special Topics', subject: 'gk', icon: 'book',
     desc: 'Focused topic-wise GK material — history, geography, ethics',
     files: [
       { name: 'Ethics & Moral MCQs', path: 'GK/Ethics and Moral MCQs.pdf' },
@@ -173,6 +177,17 @@ const pdfLibrary = [
     ],
   },
 ];
+
+const libCatIcons = {
+  mailbox: '<path d="M3 11a4 4 0 014-4h7a6 6 0 010 12H4a1 1 0 01-1-1z"/><line x1="12" y1="7" x2="12" y2="19"/><circle cx="17" cy="13" r="1"/>',
+  stamp:   '<rect x="4" y="3" width="16" height="13" rx="1" stroke-dasharray="2 2"/><circle cx="12" cy="9.5" r="3"/><path d="M8 20h8M12 16v4"/>',
+  scroll:  '<path d="M5 4a2 2 0 00-2 2v0a2 2 0 002 2h1v10a2 2 0 002 2h9a2 2 0 002-2v0a2 2 0 00-2-2H8"/><path d="M19 4a2 2 0 00-2-2H6"/><line x1="9" y1="8" x2="16" y2="8"/><line x1="9" y1="11" x2="16" y2="11"/>',
+  coins:   '<circle cx="9" cy="9" r="5"/><path d="M14.5 7A5 5 0 1117 16.9"/><path d="M14 14.5a5 5 0 11.5-.001"/>',
+  van:     '<path d="M3 16V7a1 1 0 011-1h9l4 4v6a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/>',
+  report:  '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/>',
+  globe:   '<circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 010 18 14 14 0 010-18z"/>',
+  book:    '<path d="M2 4h6a4 4 0 014 4v12a3 3 0 00-3-3H2z"/><path d="M22 4h-6a4 4 0 00-4 4v12a3 3 0 013-3h7z"/>',
+};
 
 /* ============================================================
    MOTIVATION — QUOTES & BADGES
@@ -219,6 +234,8 @@ const badgeDefs = [
     earned: () => state.history.some(h => h.pct === 100) },
   { id: 'reader5', name: 'Bookworm', desc: 'Mark 5 PDFs as read in the Study Library', icon: 'book',
     earned: () => state.pdfRead.length >= 5 },
+  { id: 'video5', name: 'Video Learner', desc: 'Mark 5 videos as watched in the Video Library', icon: 'play',
+    earned: () => state.videoWatched.length >= 5 },
 ];
 
 const badgeIcons = {
@@ -228,6 +245,7 @@ const badgeIcons = {
   star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   trophy: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4z"/><path d="M7 5H4a2 2 0 002 4M17 5h3a2 2 0 01-2 4"/>',
   book: '<path d="M2 4h6a4 4 0 014 4v12a3 3 0 00-3-3H2z"/><path d="M22 4h-6a4 4 0 00-4 4v12a3 3 0 013-3h7z"/>',
+  play: '<circle cx="12" cy="12" r="9"/><polygon points="10 8 16 12 10 16 10 8"/>',
 };
 
 /* ============================================================
@@ -737,16 +755,20 @@ function renderPlaylistGrid(filter) {
     if (filter !== 'all' && filter !== key) return;
     const subj = subjects[key];
     subj.topics.forEach((t, i) => {
+      const vKey = key + '_' + i;
+      const watched = state.videoWatched.includes(vKey);
       html += `
-        <div class="topic-card">
+        <div class="topic-card ${watched ? 'topic-done' : ''}">
           <div class="topic-card-top">
             <span class="topic-number">${subj.name}</span>
-            <span class="topic-badge" style="background:${subj.color}22;color:${subj.color}">Topic ${i + 1}</span>
+            <div class="topic-check ${watched ? 'checked' : ''}" onclick="toggleVideoWatched('${vKey}')" title="Mark as watched">
+              ${watched ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+            </div>
           </div>
           <div class="topic-name">${t.name}</div>
           <div class="topic-tags">${t.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
           <div class="topic-actions">
-            <button class="btn btn-primary btn-sm" onclick="topicYT('${key}',${i})">
+            <button class="btn btn-primary btn-sm" onclick="watchTopic('${key}',${i})">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               Watch — Postal Study
             </button>
@@ -761,6 +783,60 @@ function renderPlaylistGrid(filter) {
 function filterLib(f) {
   document.querySelectorAll('.lib-filter').forEach(b => b.classList.toggle('active', b.dataset.f === f));
   renderPlaylistGrid(f);
+}
+
+/* ============================================================
+   IN-SITE YOUTUBE PLAYER
+   ============================================================ */
+function playVideo(videoId, label) {
+  navigateTo('playlists');
+  const wrap = document.getElementById('video-player-wrap');
+  const frame = document.getElementById('video-player-frame');
+  wrap.dataset.videoId = videoId;
+  frame.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+  setText('video-player-title', label || '');
+  wrap.style.display = 'block';
+  setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+}
+
+function closeVideoPlayer() {
+  document.getElementById('video-player-frame').src = '';
+  document.getElementById('video-player-wrap').style.display = 'none';
+}
+
+function openCurrentVideoInYT() {
+  const id = document.getElementById('video-player-wrap').dataset.videoId;
+  if (id) window.open('https://www.youtube.com/watch?v=' + id, '_blank');
+}
+
+function watchTopic(key, i) {
+  const subj = subjects[key];
+  const t = subj.topics[i];
+  playVideo(subj.ytVideoId, t.name + ' — ' + subj.name);
+}
+
+function toggleVideoWatched(key) {
+  const i = state.videoWatched.indexOf(key);
+  if (i === -1) state.videoWatched.push(key); else state.videoWatched.splice(i, 1);
+  localStorage.setItem('pm_video_watched', JSON.stringify(state.videoWatched));
+  const active = document.querySelector('.lib-filter.active');
+  renderPlaylistGrid(active ? active.dataset.f : 'all');
+}
+
+function guessSubjectFromQuery(q) {
+  const s = q.toLowerCase();
+  const mathHints = ['math', 'maths', 'reasoning', 'number', 'percentage', 'profit', 'loss', 'interest', 'ratio', 'average', 'speed', 'distance', 'mensuration', 'coding', 'series', 'simplification'];
+  const gkHints = ['gk', 'history', 'geography', 'polity', 'constitution', 'science', 'sport', 'award', 'static', 'ethic', 'current affairs', 'general knowledge', 'book', 'author'];
+  if (mathHints.some(h => s.includes(h))) return 'math';
+  if (gkHints.some(h => s.includes(h))) return 'gk';
+  return 'postal';
+}
+
+function watchSearchQuery() {
+  const q = (document.getElementById('main-search-q').value || '').trim();
+  if (!q) return;
+  const key = guessSubjectFromQuery(q);
+  playVideo(subjects[key].ytVideoId, q + ' — ' + subjects[key].name);
 }
 
 /* ============================================================
@@ -803,6 +879,10 @@ function doSearch(q) {
         <button class="btn btn-primary" onclick="searchGoogle('${q}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Search on Google
+        </button>
+        <button class="btn btn-primary" onclick="watchSearchQuery()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Watch Here
         </button>
         <button class="btn btn-ghost" onclick="openYT('Postal Study ${q}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -1085,7 +1165,7 @@ function renderLibrary() {
     const pct = Math.round((readCount / cat.files.length) * 100);
     return `<div class="lib-cat-card" onclick="openLibCategory('${cat.id}')">
       <div class="lib-cat-icon" style="background:${subj.color}1a;color:${subj.color}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${libCatIcons[cat.icon] || libCatIcons.book}</svg>
       </div>
       <div class="lib-cat-name">${cat.name}</div>
       <div class="lib-cat-desc">${cat.desc}</div>

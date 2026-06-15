@@ -852,6 +852,9 @@ svg { display: block; flex-shrink: 0; }
   .motivation-card { flex-direction: column; text-align: center; }
   .motiv-illustration { margin: 0 auto; }
   .badge-row { justify-content: center; }
+  .postal-hero { flex-direction: column; text-align: center; }
+  .postal-hero-illustration { margin: 0 auto; }
+  .postal-hero-tags { justify-content: center; }
 }
 
 /* ── WEEK GRID (daily tracker) ──────────────────────────────────────────────── */
@@ -1887,3 +1890,46 @@ body.focus-active .content { padding-bottom: 70px; }
 .acc-bar-pct { width: 38px; text-align: right; flex-shrink: 0; font-weight: 700; }
 
 .donut-chart { display: flex; flex-direction: column; align-items: center; gap: 10px; justify-content: center; }
+
+/* ============================================================
+   POSTAL HERO (dashboard GDS/MTS/Postman/CHSL banner)
+   ============================================================ */
+.postal-hero { display: flex; align-items: center; gap: 24px; }
+.postal-hero-illustration { flex-shrink: 0; }
+.postal-hero-content { flex: 1; min-width: 0; }
+.postal-hero-title { font-size: 19px; font-weight: 800; margin-bottom: 6px; }
+.postal-hero-sub { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin-bottom: 14px; }
+.postal-hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.postal-tag {
+  font-size: 11.5px; font-weight: 700; padding: 5px 14px; border-radius: var(--r-full);
+  letter-spacing: .04em; background: var(--primary-muted); color: var(--primary-text);
+}
+.postal-tag.t-gds     { background: var(--danger-muted); color: var(--danger); }
+.postal-tag.t-mts     { background: var(--warning-muted); color: var(--warning); }
+.postal-tag.t-postman { background: var(--success-muted); color: var(--success-text); }
+.postal-tag.t-chsl    { background: var(--purple-muted); color: var(--purple); }
+
+.postal-shadow   { fill: var(--border); opacity: .5; }
+.postal-box      { fill: var(--danger); }
+.postal-slot     { fill: var(--card); }
+.postal-leg      { fill: var(--text-light); }
+.postal-flag-pole { fill: var(--text-light); }
+.postal-flag-flag { fill: var(--warning); }
+.postal-env-body { fill: var(--card); stroke: var(--border); stroke-width: 2; }
+.postal-env-flap { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; }
+.postal-stamp    { fill: var(--warning); }
+.postal-seal-ring { fill: none; stroke: var(--primary); stroke-width: 2; stroke-dasharray: 4 3; }
+.postal-seal-star { fill: var(--warning); }
+.postal-sparkle  { fill: var(--warning); opacity: .3; animation: motivTwinkle 2.4s ease-in-out infinite; }
+.postal-sparkle.sp2 { animation-delay: .6s; }
+.postal-sparkle.sp3 { animation-delay: 1.2s; }
+
+.postal-env { animation: postalFloat 3.4s ease-in-out infinite; }
+.postal-env.e2 { animation-delay: .6s; }
+.postal-env.e3 { animation-delay: 1.2s; }
+.postal-flag { animation: postalFlag 2.2s ease-in-out infinite; transform-origin: 78px 40px; }
+.postal-seal { animation: postalSpin 9s linear infinite; transform-origin: 172px 110px; }
+
+@keyframes postalFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes postalFlag  { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(10deg); } }
+@keyframes postalSpin  { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
