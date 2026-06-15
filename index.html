@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Postal Pathshala — GDS to MTS / Postman Exam Prep</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">PP</div>
+    <div>
+      <span class="brand-name">Postal Pathshala</span>
+      <span class="brand-sub">GDS → MTS / Postman</span>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Study</div>
+    <a href="javascript:void(0)" class="nav-item active" data-section="dashboard" onclick="navigateTo('dashboard')">
+      <i class="fa-solid fa-gauge nav-icon"></i><span class="nav-label">Dashboard</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-item" data-section="subjects" onclick="navigateTo('subjects')">
+      <i class="fa-solid fa-book-open nav-icon"></i><span class="nav-label">Subjects</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-item" data-section="mocktest" onclick="navigateTo('mocktest')">
+      <i class="fa-solid fa-bullseye nav-icon"></i><span class="nav-label">Mock Test</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-item" data-section="library" onclick="navigateTo('library')">
+      <i class="fa-solid fa-book-open-reader nav-icon"></i><span class="nav-label">PDF Library</span>
+    </a>
+    <div class="nav-section-label">Resources</div>
+    <a href="javascript:void(0)" class="nav-item" data-section="playlists" onclick="navigateTo('playlists')">
+      <i class="fa-solid fa-video nav-icon"></i><span class="nav-label">Video Library</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-item" data-section="examinfo" onclick="navigateTo('examinfo')">
+      <i class="fa-solid fa-file-lines nav-icon"></i><span class="nav-label">Exam Info</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-item" data-section="search" onclick="navigateTo('search')">
+      <i class="fa-solid fa-magnifying-glass nav-icon"></i><span class="nav-label">Search Topics</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-item" data-section="mistakebook" onclick="navigateTo('mistakebook')">
+      <i class="fa-solid fa-book-bookmark nav-icon"></i><span class="nav-label">Mistake Book</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-item" data-section="reports" onclick="navigateTo('reports')">
+      <i class="fa-solid fa-flag nav-icon"></i><span class="nav-label">Question Reports</span>
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-avatar">GDS</div>
+    <div style="flex:1;min-width:0">
+      <div class="user-name">Aspirant</div>
+      <div class="user-meta">GDS &rarr; MTS &amp; Postman 2026</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">
+      <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+    </button>
+    <span class="topbar-title" id="topbar-title">Dashboard</span>
+    <div class="topbar-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="topbar-q" placeholder="Search any topic..." onkeydown="if(event.key==='Enter'){navigateTo('search');setTimeout(()=>doSearch(this.value),50)}">
+      <button onclick="navigateTo('search');setTimeout(()=>doSearch(document.getElementById('topbar-q').value),50)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- ══ DASHBOARD ══ -->
+  <div class="section active" id="sec-dashboard">
+    <div class="page-header">
+      <h2>Dashboard</h2>
+      <p>GDS &rarr; MTS / Postman exam preparation tracker &mdash; all progress saved automatically on this device</p>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="stat-card" style="--accent-color:var(--success)">
+        <div class="stat-icon" style="background:var(--success-muted)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div class="stat-value" id="stat-topics">0/0</div><div class="stat-label">Topics Done</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--warning)">
+        <div class="stat-icon" style="background:var(--warning-muted)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><polyline points="12 16 12.01 16"/></svg></div>
+        <div class="stat-value" id="stat-streak">0</div><div class="stat-label">Day Streak</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--danger)">
+        <div class="stat-icon" style="background:var(--danger-muted)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <div class="stat-value" id="stat-tests">0</div><div class="stat-label">Mock Tests Taken</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--purple)">
+        <div class="stat-icon" style="background:var(--purple-muted)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div class="stat-value" id="stat-score">--</div><div class="stat-label">Avg Score</div>
+      </div>
+      <div class="stat-card" style="--accent-color:var(--teal)">
+        <div class="stat-icon" style="background:var(--teal-muted)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+        <div class="stat-value" id="stat-mistakes">0</div><div class="stat-label">Mistakes</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+      <!-- Progress ring + subject bars -->
+      <div class="card">
+        <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Subject Progress</div>
+        <div class="progress-ring-wrap" style="margin-bottom:16px">
+          <div class="ring-container">
+            <svg width="90" height="90" viewBox="0 0 90 90">
+              <circle class="ring-bg" cx="45" cy="45" r="36" stroke-width="8"/>
+              <circle class="ring-fill" cx="45" cy="45" r="36" stroke-width="8" id="progress-ring" stroke-dasharray="226.2" stroke-dashoffset="226.2"/>
+            </svg>
+            <div class="ring-text"><span class="ring-pct" id="ring-pct">0%</span><span class="ring-sub">topics done</span></div>
+          </div>
+          <div class="ring-info" style="flex:1">
+            <div class="subj-bars">
+              <div class="sb-row"><span style="width:60px">Postal</span><div class="sb-track"><div class="sb-fill" id="subj-bar-postal" style="background:#1d4ed8"></div></div><span id="subj-lbl-postal" class="sb-lbl">0/0</span></div>
+              <div class="sb-row"><span style="width:60px">GK</span><div class="sb-track"><div class="sb-fill" id="subj-bar-gk" style="background:#059669"></div></div><span id="subj-lbl-gk" class="sb-lbl">0/0</span></div>
+              <div class="sb-row"><span style="width:60px">Math/Reas.</span><div class="sb-track"><div class="sb-fill" id="subj-bar-math" style="background:#d97706"></div></div><span id="subj-lbl-math" class="sb-lbl">0/0</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" onclick="navigateTo('subjects')">Mark Topics Done</button>
+          <button class="btn btn-ghost btn-sm" onclick="navigateTo('mocktest')">Start Mock Test</button>
+        </div>
+      </div>
+
+      <!-- Daily check-in + countdown -->
+      <div class="card">
+        <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Daily Tracker</div>
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Last 7 days</div>
+          <div class="week-grid" id="week-grid"></div>
+        </div>
+        <button class="btn btn-success" style="width:100%;margin-bottom:14px" onclick="checkIn()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg>
+          Check In — Mark Today as Studied
+        </button>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:12px">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Exam Countdown</div>
+          <div style="font-size:20px;font-weight:800;color:var(--primary);margin-bottom:10px" id="exam-countdown">Set exam date below</div>
+          <div style="display:flex;gap:8px">
+            <input type="date" id="exam-date-input" style="flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--card);color:var(--text);font-size:13px" value="">
+            <button class="btn btn-primary btn-sm" onclick="setExamDate()">Set</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Motivation -->
+    <div class="card motivation-card">
+      <div class="motiv-illustration">
+        <svg viewBox="0 0 120 120" width="120" height="120">
+          <circle class="motiv-star s1" cx="15" cy="20" r="1.6"/>
+          <circle class="motiv-star s2" cx="102" cy="14" r="2.1"/>
+          <circle class="motiv-star s3" cx="107" cy="58" r="1.3"/>
+          <circle class="motiv-star s4" cx="18" cy="96" r="1.9"/>
+          <circle class="motiv-star s5" cx="92" cy="102" r="1.4"/>
+          <circle class="motiv-star s1" cx="60" cy="8" r="1.2"/>
+          <g class="motiv-rocket">
+            <path class="motiv-flame" d="M52 80 L60 108 L68 80 Z"/>
+            <path d="M45 70 L28 92 L45 84 Z"/>
+            <path d="M75 70 L92 92 L75 84 Z"/>
+            <path class="motiv-body" d="M60 10 C76 26 81 56 75 82 L45 82 C39 56 44 26 60 10 Z"/>
+            <circle class="motiv-window" cx="60" cy="40" r="8"/>
+          </g>
+        </svg>
+      </div>
+      <div class="motiv-content">
+        <div class="card-title" style="margin-bottom:8px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Daily Motivation
+        </div>
+        <p class="motiv-quote" id="motivation-quote"></p>
+        <div class="badge-row" id="badge-row"></div>
+      </div>
+    </div>
+
+    <!-- Performance Analytics -->
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Performance Analytics</div>
+      <div class="analytics-grid">
+        <div class="analytics-block">
+          <div class="analytics-block-title">Score Trend</div>
+          <div id="chart-trend" class="chart-box"></div>
+        </div>
+        <div class="analytics-block">
+          <div class="analytics-block-title">Subject Accuracy</div>
+          <div id="chart-accuracy" class="chart-box acc-chart"></div>
+        </div>
+        <div class="analytics-block">
+          <div class="analytics-block-title">Overall Accuracy</div>
+          <div id="chart-donut" class="chart-box donut-chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Today tasks -->
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Today's Study Routine</div>
+      <div class="today-grid">
+        <div class="today-card" style="--accent-c:var(--purple)">
+          <div class="today-label">Morning</div>
+          <div class="today-title">Postal Knowledge</div>
+          <div class="today-sub">Pick one topic from Postal Manual / Regulations / Products &amp; Services and study it thoroughly</div>
+          <button class="btn btn-ghost btn-sm" onclick="navigateTo('subjects')">Open Subjects</button>
+        </div>
+        <div class="today-card" style="--accent-c:var(--primary)">
+          <div class="today-label">Afternoon</div>
+          <div class="today-title">Practice MCQs</div>
+          <div class="today-sub">30–50 MCQs from today's topic — use the Mock Test section</div>
+          <button class="btn btn-ghost btn-sm" onclick="navigateTo('mocktest')">Start Test</button>
+        </div>
+        <div class="today-card" style="--accent-c:var(--success)">
+          <div class="today-label">Evening</div>
+          <div class="today-title">GK &amp; Current Affairs</div>
+          <div class="today-sub">10–15 minutes — Postal Study channel GK videos and India Post current affairs</div>
+          <button class="btn btn-ghost btn-sm" onclick="openYT('Postal Study GK current affairs')">Watch GK</button>
+        </div>
+        <div class="today-card" style="--accent-c:var(--warning)">
+          <div class="today-label">Sunday Only</div>
+          <div class="today-title">Mistake Review</div>
+          <div class="today-sub">Review your Mistake Book and all wrong answers from the week</div>
+          <button class="btn btn-ghost btn-sm" onclick="navigateTo('mistakebook')">Open Book</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exam quick ref -->
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Exam Quick Reference</div>
+      <div class="ref-grid">
+        <div class="ref-item"><div class="ref-label">GDS &rarr; MTS</div><div class="ref-val">50 Qs &mdash; 30 Postal + 10 GK + 10 Math &mdash; 100 Marks</div></div>
+        <div class="ref-item"><div class="ref-label">GDS &rarr; Postman</div><div class="ref-val">75 Qs &mdash; 55 Postal + 10 GK + 10 Math &mdash; 150 Marks</div></div>
+        <div class="ref-item"><div class="ref-label">Marking</div><div class="ref-val">+2 per correct &mdash; No negative marking</div></div>
+        <div class="ref-item"><div class="ref-label">Question Type</div><div class="ref-val">MCQ — Multiple Choice Questions</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="navigateTo('examinfo')">Full Exam Pattern</button>
+        <button class="btn btn-ghost btn-sm" onclick="openYT('Postal Study GDS to MTS Postman exam preparation')">Postal Study Channel</button>
+        <button class="btn btn-ghost btn-sm" onclick="searchGoogle('GDS to MTS Postman LDCE exam syllabus India Post')">Official Syllabus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SUBJECTS ══ -->
+  <div class="section" id="sec-subjects">
+    <div class="page-header"><h2>Subjects</h2><p>Click the checkbox on any topic card to mark it as completed — progress is saved automatically</p></div>
+    <div class="subject-tabs">
+      <button class="subject-tab active" data-subj="postal" onclick="switchSubject('postal')">Postal Knowledge</button>
+      <button class="subject-tab" data-subj="gk" onclick="switchSubject('gk')">General Knowledge</button>
+      <button class="subject-tab" data-subj="math" onclick="switchSubject('math')">Math &amp; Reasoning</button>
+    </div>
+    <div class="subject-panel active" id="panel-postal"></div>
+    <div class="subject-panel" id="panel-gk"></div>
+    <div class="subject-panel" id="panel-math"></div>
+  </div>
+
+  <!-- ══ MOCK TEST ══ -->
+  <div class="section" id="sec-mocktest">
+    <div class="page-header"><h2>Mock Test</h2><p>Timed MCQs with instant explanations — full-length exam simulations or subject-wise practice</p></div>
+    <div id="test-setup">
+      <div class="subject-tabs" style="margin-bottom:18px">
+        <button class="subject-tab active mock-mode-tab" data-mode="full" onclick="switchMockMode('full')">Full Mock Test</button>
+        <button class="subject-tab mock-mode-tab" data-mode="practice" onclick="switchMockMode('practice')">Subject Practice</button>
+      </div>
+      <div class="test-setup-wrap" id="mock-full">
+        <div class="test-setup-card">
+          <div class="test-icon-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+          <h2>Full Mock Test</h2>
+          <p>Pick the exam you're preparing for. Questions are randomly drawn to match the real exam pattern.</p>
+          <div class="setup-grid">
+            <div class="setup-field" style="grid-column:1/-1">
+              <label>Exam Pattern</label>
+              <select id="sel-pattern" onchange="updatePatternInfo()">
+                <option value="gds_mts">GDS &rarr; MTS (50 Qs, 100 Marks)</option>
+                <option value="gds_postman">GDS &rarr; Postman (75 Qs, 150 Marks)</option>
+              </select>
+            </div>
+          </div>
+          <div id="pattern-info" style="margin:6px 0 14px;font-size:13px;color:var(--text-muted);line-height:1.6"></div>
+          <button class="btn btn-primary btn-lg" style="width:100%" onclick="startFullMock()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Start Full Mock Test
+          </button>
+          <div style="margin-top:14px;font-size:12px;color:var(--text-muted)">No negative marking — every correct answer is worth 2 marks. Attempt every question!</div>
+        </div>
+      </div>
+      <div class="test-setup-wrap" id="mock-practice" style="display:none">
+        <div class="test-setup-card">
+          <div class="test-icon-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+          <h2>Subject Practice</h2>
+          <p>Select a subject, question count, and time limit then press Start.</p>
+          <div class="setup-grid">
+            <div class="setup-field">
+              <label>Subject</label>
+              <select id="sel-subject">
+                <option value="postal">Postal Knowledge</option>
+                <option value="gk">General Knowledge</option>
+                <option value="math">Math &amp; Reasoning</option>
+              </select>
+            </div>
+            <div class="setup-field">
+              <label>Questions</label>
+              <select id="sel-count">
+                <option value="10">10 Questions</option>
+                <option value="20" selected>20 Questions</option>
+                <option value="30">30 Questions</option>
+                <option value="50">50 Questions</option>
+              </select>
+            </div>
+            <div class="setup-field" style="grid-column:1/-1">
+              <label>Time Limit</label>
+              <select id="sel-time">
+                <option value="10">10 Minutes</option>
+                <option value="20" selected>20 Minutes</option>
+                <option value="30">30 Minutes</option>
+                <option value="60">60 Minutes</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg" style="width:100%" onclick="startTest()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Start Practice Test
+          </button>
+          <div style="margin-top:14px;font-size:12px;color:var(--text-muted)">No negative marking — every correct answer is worth 2 marks.</div>
+        </div>
+      </div>
+    </div>
+    <div id="quiz-area" style="display:none">
+      <div class="quiz-header">
+        <span class="quiz-meta" id="q-num">Question 1 of 20</span>
+        <div class="quiz-timer" id="quiz-timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="timer-text">20:00</span></div>
+      </div>
+      <div class="q-progress"><div class="q-progress-fill" id="q-prog-fill" style="width:0%"></div></div>
+      <div class="question-card">
+        <button class="btn-icon report-btn report-q-corner" title="Report an issue with this question" onclick="openReportModal(state.quiz.cur)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22V4a1 1 0 011-1h13l-2 4 2 4H6a1 1 0 00-1 1v14"/></svg>
+        </button>
+        <div class="q-text" id="q-text"></div>
+        <div class="options" id="q-options"></div>
+        <div class="explanation-box" id="q-explain"></div>
+      </div>
+      <div class="quiz-nav">
+        <button class="btn btn-ghost" onclick="endTest()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>End Test</button>
+        <button class="btn btn-primary" id="btn-next" style="display:none" onclick="nextQ()">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+    <div id="result-area" style="display:none"></div>
+  </div>
+
+  <!-- ══ PDF STUDY LIBRARY ══ -->
+  <div class="section" id="sec-library">
+    <div class="page-header"><h2>PDF Study Library</h2><p>Read official manuals, guides and GK material directly in the app — mark items as read to track your progress and earn badges</p></div>
+    <div class="lib-cat-grid" id="library-categories"></div>
+    <div id="library-files" style="display:none">
+      <button class="video-back-btn" onclick="backToLibCategories()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Categories
+      </button>
+      <h3 id="library-files-title" style="margin:16px 0 12px;font-size:15px;font-weight:700"></h3>
+      <div class="topic-grid" id="library-files-list"></div>
+    </div>
+    <div id="library-viewer" style="display:none">
+      <div class="video-back-bar">
+        <button class="video-back-btn" onclick="backToLibFiles()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <div style="flex:1;font-weight:700;font-size:14px" id="library-viewer-title"></div>
+        <button class="btn btn-ghost btn-sm" id="library-mark-read-btn" onclick="toggleViewerRead()">Mark as Read</button>
+      </div>
+      <div class="pdf-frame-wrap"><iframe id="library-viewer-frame" src="" title="PDF Viewer"></iframe></div>
+    </div>
+  </div>
+
+  <!-- ══ VIDEO LIBRARY ══ -->
+  <div class="section" id="sec-playlists">
+    <div class="page-header"><h2>Video Library</h2><p>Curated topic-wise watch links for the <strong>Postal Study</strong> YouTube channel (preferred channel for GDS LDCE prep) plus quick Google searches</p></div>
+    <div class="lib-filters">
+      <button class="lib-filter active" data-f="all" onclick="filterLib('all')">All Topics</button>
+      <button class="lib-filter" data-f="postal" onclick="filterLib('postal')">Postal Knowledge</button>
+      <button class="lib-filter" data-f="gk" onclick="filterLib('gk')">General Knowledge</button>
+      <button class="lib-filter" data-f="math" onclick="filterLib('math')">Math &amp; Reasoning</button>
+    </div>
+    <div class="topic-grid" id="playlist-grid"></div>
+  </div>
+
+  <!-- ══ EXAM INFO ══ -->
+  <div class="section" id="sec-examinfo">
+    <div class="page-header"><h2>Exam Information</h2><p>GDS &rarr; MTS and GDS &rarr; Postman LDCE exam pattern, marking scheme, syllabus and strategy</p></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>GDS &rarr; MTS Pattern</div>
+        <table class="exam-pattern-table">
+          <thead><tr><th>Subject</th><th>Questions</th><th>Marks</th></tr></thead>
+          <tbody>
+            <tr><td>Postal Knowledge</td><td>30</td><td>60</td></tr>
+            <tr><td>General Knowledge</td><td>10</td><td>20</td></tr>
+            <tr><td>Math</td><td>10</td><td>20</td></tr>
+            <tr style="font-weight:700"><td>Total</td><td>50</td><td>100</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>GDS &rarr; Postman Pattern</div>
+        <table class="exam-pattern-table">
+          <thead><tr><th>Subject</th><th>Questions</th><th>Marks</th></tr></thead>
+          <tbody>
+            <tr><td>Postal Knowledge</td><td>55</td><td>110</td></tr>
+            <tr><td>General Knowledge</td><td>10</td><td>20</td></tr>
+            <tr><td>Math</td><td>10</td><td>20</td></tr>
+            <tr style="font-weight:700"><td>Total</td><td>75</td><td>150</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Marking Scheme</div>
+      <div style="font-size:13px;line-height:1.7;color:var(--text-muted)">
+        Each question carries <strong style="color:var(--success)">2 marks</strong>. Question type is <strong>MCQ (Multiple Choice Questions)</strong>.
+        <strong style="color:var(--success)">There is no negative marking</strong> &mdash; wrong or unanswered questions simply score 0.
+        <ul style="margin:8px 0 0 16px;display:flex;flex-direction:column;gap:4px">
+          <li>Since there's no penalty, <strong>attempt every single question</strong> &mdash; never leave one blank.</li>
+          <li>GDS &rarr; Postman has 25 extra Postal Knowledge questions compared to GDS &rarr; MTS &mdash; prioritize Postal Manual / Regulations / Products &amp; Services revision if attempting Postman LDCE.</li>
+          <li>GK and Math weightage (10 + 10 = 20 Qs / 40 marks) is identical across both exams.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Syllabus by Subject</div>
+      <div id="exam-syllabus"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Exam Strategy &amp; Tips</div>
+      <ul style="margin:0 0 0 18px;display:flex;flex-direction:column;gap:8px;font-size:13.5px;color:var(--text-muted);line-height:1.6">
+        <li>Postal Knowledge is the highest-weightage subject in both patterns (60% in MTS, ~73% in Postman) — master Postal Manual Vol-V definitions, Vol VI/VII rules, Post Office Regulations 2024, and Products &amp; Services schemes first.</li>
+        <li>GK questions in these LDCEs lean heavily on Static GK (history, geography, polity, books &amp; authors, "firsts in India") plus India Post current affairs — the <strong>Postal Study</strong> channel's GK series covers this well.</li>
+        <li>Math is basic arithmetic level (10th-class standard) — focus on speed and accuracy on percentage, profit/loss, SI/CI, ratio, time-speed-distance and simplification rather than advanced topics.</li>
+        <li>Since there's no negative marking, attempt 100% of questions and use elimination for unfamiliar ones.</li>
+        <li>Take full-length mock tests under timed conditions (50 min for MTS, 75 min for Postman) to build stamina and pacing.</li>
+        <li>Maintain a Mistake Book — review every wrong answer from your mocks weekly.</li>
+      </ul>
+      <div style="margin-top:14px"><button class="btn btn-primary btn-sm" onclick="openYT('Postal Study GDS to MTS Postman exam preparation')">Open Postal Study on YouTube</button></div>
+    </div>
+  </div>
+
+  <!-- ══ SEARCH ══ -->
+  <div class="section" id="sec-search">
+    <div class="search-hero">
+      <h2>Search Any Topic</h2>
+      <p>Google &amp; Postal Study YouTube channel &mdash; all from one place</p>
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="main-search-q" placeholder="e.g. Speed Post, KVP interest rate, Indian rivers..." onkeydown="if(event.key==='Enter') doSearch(this.value)">
+        <button class="btn btn-primary btn-sm" onclick="doSearch(document.getElementById('main-search-q').value)">Search</button>
+      </div>
+      <div class="quick-chips" id="quick-chips"></div>
+    </div>
+    <div id="search-results"></div>
+  </div>
+
+  <!-- ══ MISTAKE BOOK ══ -->
+  <div class="section" id="sec-mistakebook">
+    <div class="page-header"><h2>Mistake Book</h2><p>Track wrong answers and tricky concepts — review every Sunday to avoid repeating mistakes</p></div>
+    <div class="mb-form-card">
+      <div class="mb-form-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Entry</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Topic *</label><input type="text" id="mb-topic" placeholder="e.g. KVP maturity period, Speed Post weight limits"></div>
+        <div class="form-group"><label>Subject</label>
+          <select id="mb-subj">
+            <option value="postal">Postal Knowledge</option>
+            <option value="gk">General Knowledge</option>
+            <option value="math">Math &amp; Reasoning</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column:1/-1"><label>Question / Mistake *</label><textarea id="mb-question" placeholder="Describe the question or what went wrong..."></textarea></div>
+        <div class="form-group"><label>Correct Answer</label><input type="text" id="mb-formula" placeholder="e.g. 115 months, 7.5%"></div>
+        <div class="form-group"><label>Why you got it wrong</label><input type="text" id="mb-why" placeholder="e.g. Confused KVP with NSC maturity period"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addMistake()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save to Mistake Book</button>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="mb-header">
+        <div class="mb-header-left"><h3>My Mistakes</h3><span class="mb-count" id="mb-count"></span></div>
+        <div class="mb-filter-wrap">
+          <button class="mb-filter active" data-f="all" onclick="filterMB('all')">All</button>
+          <button class="mb-filter" data-f="postal" onclick="filterMB('postal')">Postal</button>
+          <button class="mb-filter" data-f="gk" onclick="filterMB('gk')">GK</button>
+          <button class="mb-filter" data-f="math" onclick="filterMB('math')">Math</button>
+        </div>
+      </div>
+      <div id="mb-list"></div>
+    </div>
+  </div>
+
+  <!-- ══ QUESTION REPORTS ══ -->
+  <div class="section" id="sec-reports">
+    <div class="page-header"><h2>Question Reports</h2><p>Found an incorrect or unclear question during a mock test? Report it using the flag icon, then fix it here — the corrected version will be used in all future tests</p></div>
+    <div class="card" style="margin-bottom:0">
+      <div class="mb-header">
+        <div class="mb-header-left"><h3>Reported Questions</h3><span class="mb-count" id="reports-count"></span></div>
+        <div class="mb-filter-wrap">
+          <button class="mb-filter report-filter active" data-f="all" onclick="filterReports('all')">All</button>
+          <button class="mb-filter report-filter" data-f="open" onclick="filterReports('open')">Open</button>
+          <button class="mb-filter report-filter" data-f="fixed" onclick="filterReports('fixed')">Fixed</button>
+        </div>
+      </div>
+      <div id="reports-list"></div>
+    </div>
+  </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal-box" id="modal-box"></div>
+</div>
+
+<script src="js/questions.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
