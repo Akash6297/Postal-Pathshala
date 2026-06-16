@@ -178,6 +178,21 @@ const pdfLibrary = [
   },
 ];
 
+/* Maps each PDF category to the question range in questionsDB that covers its content.
+   start/end are inclusive indices within questionsDB[subj].
+   max caps how many questions are drawn (defaults to min(20, pool size)). */
+const pdfExamMap = {
+  postal5:   { subj: 'postal', start: 0,   end: 30,  label: 'Postal Manual Vol-V Exam' },
+  postal67:  { subj: 'postal', start: 31,  end: 66,  label: 'Postal Manual VI & VII Exam' },
+  pogregs:   { subj: 'postal', start: 67,  end: 92,  label: 'Post Office Regulations 2024 Exam' },
+  products:  { subj: 'postal', start: 93,  end: 139, label: 'Products & Services Exam' },
+  pog1:      { subj: 'postal', start: 67,  end: 139, label: 'Post Office Guide Exam' },
+  annual:    { subj: 'postal', start: 140, end: 307, label: 'Annual Report & Current Affairs Exam' },
+  gkparts:   { subj: 'gk',    start: 0,   end: 136, label: 'GK Part Series Exam' },
+  gk2000:    { subj: 'gk',    start: 137, end: 258, label: '2000 GK Lecture Series Exam' },
+  gkspecial: { subj: 'gk',    start: 259, end: 327, label: 'GK Special Topics Exam' },
+};
+
 const libCatIcons = {
   mailbox: '<path d="M3 11a4 4 0 014-4h7a6 6 0 010 12H4a1 1 0 01-1-1z"/><line x1="12" y1="7" x2="12" y2="19"/><circle cx="17" cy="13" r="1"/>',
   stamp:   '<rect x="4" y="3" width="16" height="13" rx="1" stroke-dasharray="2 2"/><circle cx="12" cy="9.5" r="3"/><path d="M8 20h8M12 16v4"/>',
@@ -1259,6 +1274,73 @@ function togglePdfRead(key) {
   renderLibrary();
   if (state.libCategory) renderLibFilesList(state.libCategory);
   renderDashboard();
+}
+
+function startPdfExam() {
+  const catId = state.libCategory;
+  const map = pdfExamMap[catId];
+  if (!map) {
+    showToast('No exam questions are mapped for this PDF category yet.', 'err');
+    return;
+  }
+  const total = getSubjectQuestions(map.subj).slice(map.start, map.end + 1).length;
+  if (!total) {
+    showToast('No questions available for this PDF.', 'err');
+    return;
+  }
+
+  const steps = [10, 20, 30, 50, 100].filter(n => n < total);
+  const countOpts = steps.map(n =>
+    `<option value="${n}" ${n === Math.min(20, total) ? 'selected' : ''}>${n} Questions</option>`
+  ).join('') + `<option value="${total}" ${total <= 20 ? 'selected' : ''}>All — ${total} Questions</option>`;
+
+  showModal(`
+    <div class="modal-header">
+      <h3>PDF Exam Setup</h3>
+      <button class="btn-icon" onclick="closeModal()">${closeIcon()}</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+        <strong>${map.label.replace(' Exam', '')}</strong><br>
+        <span style="font-size:12px">${total} questions available — mix is shuffled randomly each time</span>
+      </p>
+      <div style="display:grid;gap:12px">
+        <div class="setup-field">
+          <label>How many questions?</label>
+          <select id="pdf-exam-count">${countOpts}</select>
+        </div>
+        <div class="setup-field">
+          <label>Time Limit</label>
+          <select id="pdf-exam-time">
+            <option value="10">10 Minutes</option>
+            <option value="20" selected>20 Minutes</option>
+            <option value="30">30 Minutes</option>
+            <option value="60">60 Minutes</option>
+            <option value="90">90 Minutes</option>
+          </select>
+        </div>
+      </div>
+      <p style="font-size:11.5px;color:var(--text-muted);margin-top:12px">No negative marking. Wrong answers are saved to your Mistake Book.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="beginPdfExam()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Start Exam
+      </button>
+    </div>
+  `);
+}
+
+function beginPdfExam() {
+  const catId = state.libCategory;
+  const map = pdfExamMap[catId];
+  const count = parseInt(document.getElementById('pdf-exam-count').value, 10);
+  const mins = parseInt(document.getElementById('pdf-exam-time').value, 10);
+  const pool = shuffle(getSubjectQuestions(map.subj).slice(map.start, map.end + 1)).slice(0, count);
+  closeModal();
+  navigateTo('mocktest');
+  beginQuiz(pool, mins * 60, 2, map.label);
 }
 
 /* ============================================================
